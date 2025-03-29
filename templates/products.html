@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+{% block title %}Products - TechShop{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1 class="display-5 mb-4">Featured Products</h1>
+    </div>
+    <div class="col-md-4">
+        <div class="cart-preview d-none" id="cartPreview">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Your Cart</h5>
+                    <button type="button" class="btn-close" id="closeCartPreview"></button>
+                </div>
+                <div class="card-body" id="cartPreviewBody">
+                    <p class="text-center" id="emptyCartMessage">Your cart is empty</p>
+                    <div id="cartItems"></div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>Total:</span>
+                        <span class="fw-bold" id="cartTotal">$0.00</span>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('payment') }}" class="btn btn-primary" id="checkoutBtn" disabled>
+                            Proceed to Checkout
+                        </a>
+                        <button class="btn btn-outline-secondary btn-sm" id="clearCartBtn">
+                            Clear Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    {% for product in products %}
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 text-center">
+                        <img src="{{ product.image }}" class="product-image" alt="{{ product.name }}" style="width: 100px; height: 100px;">
+                    </div>
+                    <div class="col-md-8">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text product-price">${{ product.price }}</p>
+                        <p class="card-text">{{ product.description }}</p>
+                        <div class="d-flex align-items-center">
+                            <div class="input-group me-2" style="width: 120px;">
+                                <span class="input-group-text">Qty</span>
+                                <input type="number" class="form-control quantity-input" value="1" min="1" max="10" data-product-id="{{ product.id }}">
+                            </div>
+                            <button class="btn btn-primary add-to-cart" data-product-id="{{ product.id }}">
+                                <i class="fas fa-cart-plus me-1"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+<script src="{{ url_for('static', filename='js/products.js') }}"></script>
+{% endblock %}
